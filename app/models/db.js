@@ -13,7 +13,6 @@ const connection = mysql.createConnection({
 // open the MySQL connection
 connection.connect(error => {
   if (error) { 
-    //throw ;
     console.log(`Failed to connect to the database ${error}`);
     console.log(`host: ${dbConfig.HOST}`);
     console.log(`user: ${dbConfig.USER}`);
