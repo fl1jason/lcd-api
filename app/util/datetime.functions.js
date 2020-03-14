@@ -1,5 +1,5 @@
 
-exports.getTimeStamp = getTimestamp
+exports.getTimestamp = getTimestamp
 
 function getTimestamp() 
 {
