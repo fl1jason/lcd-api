@@ -1,10 +1,11 @@
 const sql = require("./db.js");
+const funcs = require("../util/datetime.functions.js");
 
 // constructor
 const Message = function(message) {
   this.user_name = message.user_name;
   this.message_text = message.message_text;
-  this.time_stamp = message.time_stamp;
+  this.time_stamp = funcs.getTimestamp();
 };
 
 Message.create = (newMessage, result) => {
