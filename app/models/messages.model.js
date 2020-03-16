@@ -21,8 +21,9 @@ Message.create = (newMessage, result) => {
   });
 };
 
-Message.findById = (messageId, result) => {
-  sql.query(`SELECT * FROM messages WHERE id = ${messageId}`, (err, res) => {
+
+Message.findLatestByUserId = (userId, result) => {
+  sql.query(`SELECT message_text FROM messages WHERE user_name = '${userId}' ORDER BY time_stamp DESC LIMIT 1`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -32,6 +33,25 @@ Message.findById = (messageId, result) => {
     if (res.length) {
       console.log("found message: ", res[0]);
       result(null, res[0]);
+      return;
+    }
+
+    // not found Message with the id
+    result({ kind: "not_found" }, null);
+  });
+};
+
+Message.findById = (messageId, result) => {
+  sql.query(`SELECT * FROM messages WHERE id = ${messageId}`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      console.log("found message: ", res[0].message_text);
+      result(null, res[0].message_text);
       return;
     }
 

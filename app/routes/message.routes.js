@@ -16,6 +16,12 @@ module.exports = app => {
   
     // Retrieve a single Message with messageId
     app.get("/messages/:messageId", messages.findOne);
+
+    // Retrieve a single Message with messageId
+    app.get("/messages/latest/:userId", messages.findLatest);
+  
+    // Retrieve a single Message with messageId
+    app.get("/latest/:userId", messages.findLatest);
   
     // Update a Message with messageId
     app.put("/messages/:messageId", messages.update);

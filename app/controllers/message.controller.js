@@ -44,6 +44,23 @@ exports.findOne = (req, res) => {
     });
   };
 
+// Find a single Message with a Message ID
+exports.findLatest = (req, res) => {
+  Message.findLatestByUserId(req.params.userId, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `No Message found for user id ${req.params.userId}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Message for user id " + req.params.userId
+        });
+      }
+    } else res.send(data);
+  });
+};
+
 // Retrieve all Message from the database.
 exports.findAll = (req, res) => {
     Message.getAll((err, data) => {
