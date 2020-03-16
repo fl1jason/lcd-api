@@ -31,8 +31,8 @@ Message.findLatestByUserId = (userId, result) => {
     }
 
     if (res.length) {
-      console.log("found message: ", res[0].user_name);
-      result(null, res[0].user_name);
+      console.log("found message: ", res[0].message_text);
+      result(null, res[0].message_text);
       return;
     }
 
