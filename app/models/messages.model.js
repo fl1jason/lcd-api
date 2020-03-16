@@ -23,7 +23,7 @@ Message.create = (newMessage, result) => {
 
 
 Message.findLatestByUserId = (userId, result) => {
-  sql.query(`SELECT message_text FROM messages WHERE user_name = '${userId}' ORDER BY time_stamp DESC LIMIT 1`, (err, res) => {
+  sql.query(`SELECT message_text FROM messages WHERE user_name = '${userId}' ORDER BY id DESC LIMIT 1`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
