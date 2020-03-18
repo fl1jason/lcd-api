@@ -61,7 +61,7 @@ Message.findById = (messageId, result) => {
 };
 
 Message.getAll = result => {
-  sql.query("SELECT * FROM messages", (err, res) => {
+  sql.query("SELECT * FROM messages ORDER BY time_stamp DESC", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
