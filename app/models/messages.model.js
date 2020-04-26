@@ -42,7 +42,7 @@ Message.findLatestByUserId = (userId, result) => {
 };
 
 Message.findFromUser = (userId, result) => {
-  sql.query(`SELECT * FROM Messages INNER JOIN users ON Messages.message_to = users.ID WHERE Messages.message_from=${userId} ORDER BY messages.time_stamp DESC`, (err, res) => {
+  sql.query(`SELECT * FROM messages INNER JOIN users ON messages.message_to = users.ID WHERE messages.message_from=${userId} ORDER BY messages.time_stamp DESC`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -61,7 +61,7 @@ Message.findFromUser = (userId, result) => {
 };
 
 Message.findToUser = (userId, result) => {
-  sql.query(`SELECT * FROM Messages INNER JOIN users ON Messages.message_from = users.ID WHERE Messages.message_to=${userId} ORDER BY messages.time_stamp DESC`, (err, res) => {
+  sql.query(`SELECT * FROM messages INNER JOIN users ON messages.message_from = users.ID WHERE messages.message_to=${userId} ORDER BY messages.time_stamp DESC`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
