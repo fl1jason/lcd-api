@@ -19,9 +19,9 @@ module.exports = app => {
   // Retrieve a single User with userId
   app.get("/users/:userId", users.findOne);
 
-  // Retrieve a User Guest account
-  app.get("/users/guest", users.findLatest);
-
+  // Retrieve a single User with userId
+  app.get("/users/username/:userId", users.findByUserName);
+  
   // Update a User with userId
   app.put("/users/:userId", users.update);
 
