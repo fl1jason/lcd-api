@@ -3,5 +3,6 @@ module.exports = {
     USER: "root",
     PASSWORD: "root",
     DB: "lcd",
-    PORT: "8889"
+    PORT: "8889",
+    SECRET: "batty"
   };

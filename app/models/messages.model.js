@@ -1,10 +1,11 @@
 const sql = require("./db.js");
+const funcs = require("../util/datetime.functions.js");
 
 // constructor
 const Message = function(message) {
   this.user_name = message.user_name;
   this.message_text = message.message_text;
-  this.time_stamp = message.time_stamp;
+  this.time_stamp = funcs.getTimestamp();
 };
 
 Message.create = (newMessage, result) => {
@@ -17,6 +18,64 @@ Message.create = (newMessage, result) => {
 
     console.log("created message: ", { id: res.insertId, ...newMessage });
     result(null, { id: res.insertId, ...newMessage });
+  });
+};
+
+
+Message.findLatestByUserId = (userId, result) => {
+  sql.query(`SELECT message_text FROM messages WHERE user_name = '${userId}' ORDER BY id DESC LIMIT 1`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      console.log("found message: ", res[0].message_text);
+      result(null, res[0].message_text);
+      return;
+    }
+
+    // not found Message with the id
+    result({ kind: "not_found" }, null);
+  });
+};
+
+Message.findFromUser = (userId, result) => {
+  sql.query(`SELECT * FROM Messages INNER JOIN users ON Messages.message_to = users.ID WHERE Messages.message_from=${userId} ORDER BY messages.time_stamp DESC`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      console.log("messages: ", res);
+      result(null, res);
+      return;
+    }
+
+    // not found Message with the id
+    result({ kind: "not_found" }, null);
+  });
+};
+
+Message.findToUser = (userId, result) => {
+  sql.query(`SELECT * FROM Messages INNER JOIN users ON Messages.message_from = users.ID WHERE Messages.message_to=${userId} ORDER BY messages.time_stamp DESC`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      console.log("messages: ", res);
+      result(null, res);
+      return;
+    }
+
+    // not found Message with the id
+    result({ kind: "not_found" }, null);
   });
 };
 
@@ -40,7 +99,7 @@ Message.findById = (messageId, result) => {
 };
 
 Message.getAll = result => {
-  sql.query("SELECT * FROM messages", (err, res) => {
+  sql.query("SELECT * FROM messages ORDER BY time_stamp DESC", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);

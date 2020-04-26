@@ -13,8 +13,7 @@ exports.create = (req, res) => {
     // Create a Message
     const message = new Message({
       user_name: req.body.user_name,
-      message_text: req.body.message_text,
-      time_stamp: req.body.time_stamp
+      message_text: req.body.message_text
     });
 
     // Save Message in the database
@@ -28,7 +27,7 @@ exports.create = (req, res) => {
     });
   };
 
-// Find a single Message with a MessageID
+// Find a single Message with a Message ID
 exports.findOne = (req, res) => {
     Message.findById(req.params.messageId, (err, data) => {
       if (err) {
@@ -45,6 +44,23 @@ exports.findOne = (req, res) => {
     });
   };
 
+// Find a single Message with a Message ID
+exports.findLatest = (req, res) => {
+  Message.findLatestByUserId(req.params.userId, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `No Message found for user id ${req.params.userId}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Message for user id " + req.params.userId
+        });
+      }
+    } else res.send(data);
+  });
+};
+
 // Retrieve all Message from the database.
 exports.findAll = (req, res) => {
     Message.getAll((err, data) => {
@@ -56,6 +72,41 @@ exports.findAll = (req, res) => {
       else res.send(data);
     });
   };
+
+// Find Messages Sent to a User
+exports.findToUser = (req, res) => {
+  Message.findToUser(req.params.userId, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `No Messages found for user id ${req.params.userId}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Messages for user id " + req.params.userId
+        });
+      }
+    } else res.send(data);
+  });
+};
+
+// Find Messages Sent to a User
+exports.findFromUser = (req, res) => {
+  Message.findFromUser(req.params.userId, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `No Messages found from user id ${req.params.userId}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Messages from user id " + req.params.userId
+        });
+      }
+    } else res.send(data);
+  });
+};
+
 
 // Update a Message identified by the messageId in the request
 exports.update = (req, res) => {
@@ -73,7 +124,7 @@ exports.update = (req, res) => {
         if (err) {
           if (err.kind === "not_found") {
             res.status(404).send({
-              message: `Not found Message with id ${req.params.messageId}.`
+              message: `No Message found with id ${req.params.messageId}.`
             });
           } else {
             res.status(500).send({
@@ -91,7 +142,7 @@ exports.delete = (req, res) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
-            message: `Not found Message with id ${req.params.messageId}.`
+            message: `No Message found with id ${req.params.messageId}.`
           });
         } else {
           res.status(500).send({
@@ -108,7 +159,7 @@ exports.deleteAll = (req, res) => {
       if (err)
         res.status(500).send({
           message:
-            err.message || "Some error occurred while removing all Messages."
+            err.message || "An error occurred while removing all Messages."
         });
       else res.send({ message: `All Messages were deleted successfully!` });
     });

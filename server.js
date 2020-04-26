@@ -38,5 +38,5 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to LCD Message Server API." });
 });
 
-
 require("./app/routes/message.routes.js")(app);
+require("./app/routes/user.routes.js")(app);
