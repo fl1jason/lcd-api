@@ -21,16 +21,16 @@ User.create = (newUser, result) => {
   newUser.user_psw = salt + "$" + hash;
 
   // Does a user with this email address already exist?
-  User.findByEmail(newUser.userEmail, res);
-  if (res.length) {
+  User.findByEmail(newUser.userEmail, result);
+  if (result.length) {
     
     result(null, "Email address already in use");
     return;
   }
 
   // Does a user with this User Name already exist?
-  User.findByUserName(newUser.userName, res);
-  if (res.length) {
+  User.findByUserName(newUser.userName, result);
+  if (result.length) {
     
     result(null, "UserName address already in use");
     return;
