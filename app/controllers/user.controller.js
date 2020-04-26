@@ -88,17 +88,17 @@ exports.auth = (req, res) => {
   });
 };
 
-// Find a single User with a User ID
-exports.findLatest = (req, res) => {
-  User.findLatestByUserId(req.params.userId, (err, data) => {
+// Find by User name
+exports.findByUserName = (req, res) => {
+  User.findByUserName(req.params.userName, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `No User found for user id ${req.params.userId}.`
+          message: `No User found with id ${req.params.userName}.`
         });
       } else {
         res.status(500).send({
-          message: "Error retrieving User for user id " + req.params.userId
+          message: "Error retrieving User with UserName " + req.params.userName
         });
       }
     } else res.send(data);

@@ -20,6 +20,22 @@ User.create = (newUser, result) => {
                                   .digest("base64");
   newUser.user_psw = salt + "$" + hash;
 
+  // Does a user with this email address already exist?
+  User.findByEmail(newUser.userEmail, res);
+  if (res.length) {
+    
+    result(null, "Email address already in use");
+    return;
+  }
+
+  // Does a user with this User Name already exist?
+  User.findByUserName(newUser.userName, res);
+  if (res.length) {
+    
+    result(null, "UserName address already in use");
+    return;
+  }
+
   sql.query("INSERT INTO users SET ?", newUser, (err, res) => {
     if (err) {
       console.log("error: ", err);
