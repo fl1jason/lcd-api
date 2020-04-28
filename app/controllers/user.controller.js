@@ -21,14 +21,25 @@ exports.create = (req, res) => {
       user_avatar: req.body.user_avatar
     });
 
-    // Save User in the database
-    User.create(user, (err, data) => {
-      if (err)
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while creating the User."
-        });
-      else res.send(data);
+    // Does the username or email address already exist?
+    User.Exists(user, (err, data)  => {
+        if (data)
+        {
+          res.status(404).send({
+            message: `User name or email already exists.`
+          });
+        }else{
+          
+          // Save User in the database
+          User.create(user, (err, data) => {
+            if (err)
+              res.status(500).send({
+                message:
+                  err.message || "Some error occurred while creating the User."
+              });
+            else res.send(data);
+          });
+        }
     });
   };
 

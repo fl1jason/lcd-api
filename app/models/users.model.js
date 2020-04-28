@@ -18,25 +18,9 @@ User.create = (newUser, result) => {
   let hash = crypto.createHmac('sha512',salt)
                                   .update(newUser.user_psw)
                                   .digest("base64");
-  newUser.user_psw = salt + "$" + hash;
+    newUser.user_psw = salt + "$" + hash;
 
-  // Does a user with this email address already exist?
-  User.findByEmail(newUser.userEmail, result);
-  if (result.length) {
-    
-    result(null, "Email address already in use");
-    return;
-  }
-
-  // Does a user with this User Name already exist?
-  User.findByUserName(newUser.userName, result);
-  if (result.length) {
-    
-    result(null, "UserName address already in use");
-    return;
-  }
-
-  sql.query("INSERT INTO users SET ?", newUser, (err, res) => {
+    sql.query("INSERT INTO users SET ?", newUser, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -47,6 +31,19 @@ User.create = (newUser, result) => {
     result(null, { id: res.insertId, ...newUser });
   });
 };
+
+User.Exists = (user, result) => {
+
+  let bExists = false;
+  sql.query(`SELECT * FROM users WHERE user_email = '${user.user_email}' OR user_name='${user.user_name}'`, (err, res) => {
+    if (res.length){
+      result(null, res[0]);
+    } else {
+      result(null, null);
+    }
+    return;
+    });
+}
 
 User.ComnparePasswords = (pswHash, pswAttempt, result) => {
   
