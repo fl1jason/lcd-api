@@ -102,7 +102,7 @@ Message.findById = (messageId, result) => {
 Message.getAll = (params, result) => {
   sqlParams = new qry(params);
 
-  sql.query(`SELECT * FROM messages ${sqlParams.whereClause()} ORDER BY time_stamp DESC`, (err, res) => {
+  sql.query(`SELECT * FROM messages ${sqlParams.whereClause()} ORDER BY time_stamp DESC ${sqlParams.pageClause()}`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);

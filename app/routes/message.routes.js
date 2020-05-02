@@ -4,6 +4,7 @@ module.exports = app => {
   /**
   * Message Specific Routes 
   */
+
   // Create a new Message
   app.post("/messages", messages.create);
 
