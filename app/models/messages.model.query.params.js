@@ -30,11 +30,11 @@ module.exports = function (queryString) {
     }
 
     if (this.from_user != ''){
-      addClause(`messages.message_from LIKE %${this.from_user}%`);
+      addClause(`messages.message_from = ${this.from_user}`);
     }
 
     if (this.to_user != ''){
-      addClause(`messages.message_to LIKE %${this.to_user}%`);
+      addClause(`messages.message_to = ${this.to_user}`);
     }
     
     return clause;
