@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const config = require("../config/db.config.js");
-
 const Message = require("../models/messages.model.js");
 
 // Create and Save a new Message
@@ -93,8 +92,7 @@ exports.findAll = (req, res) => {
   jwt.verify(token, config.SECRET, function(err, decoded) 
   {
     if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
-  
-    Message.getAll((err, data) => {
+    Message.getAll(req.query, (err, data) => {
       if (err)
         res.status(500).send({
           message:
@@ -115,7 +113,7 @@ exports.findToUser = (req, res) => {
   {
     if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
   
-    Message.findToUser(req.params.userId, (err, data) => {
+    Message.findToUser(req.params.userId, req.query, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({

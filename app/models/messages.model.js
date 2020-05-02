@@ -1,5 +1,6 @@
 const sql = require("./db.js");
 const funcs = require("../util/datetime.functions.js");
+const qry = require("./messages.model.query.params.js");
 
 // constructor
 const Message = function(message) {
@@ -98,8 +99,10 @@ Message.findById = (messageId, result) => {
   });
 };
 
-Message.getAll = result => {
-  sql.query("SELECT * FROM messages ORDER BY time_stamp DESC", (err, res) => {
+Message.getAll = (params, result) => {
+  sqlParams = new qry(params);
+
+  sql.query(`SELECT * FROM messages ${sqlParams.whereClause()} ORDER BY time_stamp DESC`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
