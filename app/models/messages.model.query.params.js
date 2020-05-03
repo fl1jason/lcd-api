@@ -5,7 +5,7 @@ module.exports = function (queryString) {
   this.search_query = queryString.query? queryString.query : '';
   this.from_user = queryString.from? queryString.from : '';
   this.to_user = queryString.to? queryString.to : '';
-  this.order = 'user_created DESC';
+  this.order = 'messages.time_stamp DESC';
 
   if (queryString.order){
     if (queryString.order == 'oldest')
