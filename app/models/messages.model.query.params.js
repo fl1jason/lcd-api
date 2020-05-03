@@ -9,10 +9,10 @@ module.exports = function (queryString) {
 
   if (queryString.order){
     if (queryString.order == 'oldest')
-      this.order = 'user_created';
+      this.order = 'messages.time_stamp';
 
     if (queryString.order == 'newest')
-      this.order = 'user_created DESC';
+      this.order = 'messages.time_stamp DESC';
 
     if (queryString.order == 'user')
       this.order = 'users.user_name';
@@ -64,20 +64,6 @@ module.exports = function (queryString) {
     }
 
     if (this.from_user != ''){
-      table = 'messages INNER JOIN users on users.id = messages.message_to';
-    }
-
-    return (table);
-  }
-
-  this.createOrder = function () { 
-
-    let table = 'messages';
-    if (this.from_user != ''){
-      table = 'messages INNER JOIN users on users.id = messages.message_from';
-    }
-
-    if (this.to_user != ''){
       table = 'messages INNER JOIN users on users.id = messages.message_to';
     }
 
