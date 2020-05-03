@@ -5,6 +5,18 @@ module.exports = function (queryString) {
   this.search_query = queryString.query? queryString.query : '';
   this.from_user = queryString.from? queryString.from : '';
   this.to_user = queryString.to? queryString.to : '';
+  this.order = 'user_created DESC';
+  if (queryString.order){
+    if (queryString.order == 'oldest')
+      this.order = 'user_created';
+
+    if (queryString.order == 'newest')
+      this.order = 'user_created DESC';
+
+    if (queryString.order == 'user')
+      this.order = 'users.user_name';
+  }
+  
 
   let offset = (this.page -1)  * this.page_size;
   
@@ -40,6 +52,38 @@ module.exports = function (queryString) {
     return clause;
   }
 
+  this.createColumns = function () { 
+    return ("messages.message_text, messages.time_stamp, users.user_name, users.user_created, users.user_avatar");
+  }
+
+  this.createTable = function () { 
+
+    let table = 'messages';
+    if (this.to_user != ''){
+      table = 'messages INNER JOIN users on users.id = messages.message_from';
+    }
+
+    if (this.from_user != ''){
+      table = 'messages INNER JOIN users on users.id = messages.message_to';
+    }
+
+    return (table);
+  }
+
+  this.createOrder = function () { 
+
+    let table = 'messages';
+    if (this.from_user != ''){
+      table = 'messages INNER JOIN users on users.id = messages.message_from';
+    }
+
+    if (this.to_user != ''){
+      table = 'messages INNER JOIN users on users.id = messages.message_to';
+    }
+
+    return (table);
+  }
+
   this.whereClause = function () { 
     
     let filter = this.createFilter();
@@ -50,5 +94,13 @@ module.exports = function (queryString) {
     }
 
     return clause;
+  }
+
+  this.select = function () { 
+    
+    let query = `SELECT ${qry.createColumns()} FROM ${qry.createTable()} ${qry.whereClause()} ORDER BY ${this.order} ${qry.pageClause()}`;
+    console.log(`SQL: ${query}`);
+
+    return query;
   }
 }
