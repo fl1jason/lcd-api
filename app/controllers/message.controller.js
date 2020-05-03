@@ -23,7 +23,9 @@ exports.create = (req, res) => {
     // Create a Message
     const message = new Message({
       user_name: req.body.user_name,
-      message_text: req.body.message_text
+      message_text: req.body.message_text,
+      message_from: req.body.message_from,
+      message_to: req.body.message_to
     });
 
     // Save Message in the database

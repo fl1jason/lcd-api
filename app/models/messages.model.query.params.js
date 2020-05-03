@@ -6,6 +6,7 @@ module.exports = function (queryString) {
   this.from_user = queryString.from? queryString.from : '';
   this.to_user = queryString.to? queryString.to : '';
   this.order = 'user_created DESC';
+
   if (queryString.order){
     if (queryString.order == 'oldest')
       this.order = 'user_created';
@@ -17,7 +18,6 @@ module.exports = function (queryString) {
       this.order = 'users.user_name';
   }
   
-
   let offset = (this.page -1)  * this.page_size;
   
   this.pageClause = function () { 

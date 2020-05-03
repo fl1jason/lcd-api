@@ -6,6 +6,8 @@ const qryBuilder = require("./messages.model.query.params.js");
 const Message = function(message) {
   this.user_name = message.user_name;
   this.message_text = message.message_text;
+  this.message_from = message.message_from;
+  this.message_to = message.message_to;
   this.time_stamp = funcs.getTimestamp();
 };
 
@@ -100,8 +102,8 @@ Message.findById = (messageId, result) => {
 };
 
 Message.getAll = (params, result) => {
+  
   qry = new qryBuilder(params);
-
   sql.query(qry.select(), (err, res) => {
     if (err) {
       console.log("error: ", err);
