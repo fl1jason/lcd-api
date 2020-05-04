@@ -58,11 +58,7 @@ module.exports = function (queryString) {
 
   this.createTable = function () { 
 
-    let table = 'messages';
-    if (this.to_user != ''){
-      table = 'messages INNER JOIN users on users.id = messages.message_from';
-    }
-
+    let table = 'messages INNER JOIN users on users.id = messages.message_from';
     if (this.from_user != ''){
       table = 'messages INNER JOIN users on users.id = messages.message_to';
     }
