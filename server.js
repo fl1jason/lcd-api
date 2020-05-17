@@ -38,7 +38,7 @@ app.listen(PORT, () => {
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to LCD Message Server API." });
+  res.json({ message: "Welcome to LCD Message Server API.", version: "1.0" });
 });
 
 require("./app/routes/message.routes.js")(app);
