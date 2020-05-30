@@ -98,8 +98,8 @@ exports.auth = (req, res) => {
       // Did the Passwords math or they're already logged in with Facebook?
       console.log(`Facebook Token ${req.body.facebook_token}`);
       console.log(`Password is Token ${req.body.user_psw}`);
-
-      if ((req.body.facebook_token != undefined) || User.ComnparePasswords(data.user_psw, req.body.user_psw, res))
+      let bValidFBAuth = ((req.body.facebook_token != undefined) && (req.body.facebook_token != ""));
+      if (bValidFBAuth || User.ComnparePasswords(data.user_psw, req.body.user_psw, res))
       {
         const jwtSecret = config.SECRET;
         let refreshId = req.body.user_name + jwtSecret;
