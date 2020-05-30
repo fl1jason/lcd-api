@@ -96,6 +96,9 @@ exports.auth = (req, res) => {
     else 
     {
       // Did the Passwords math or they're already logged in with Facebook?
+      console.log(`Facebook Token ${req.body.facebook_token}`);
+      console.log(`Password is Token ${req.body.user_psw}`);
+      
       if ((req.body.facebook_token != '') || User.ComnparePasswords(data.user_psw, req.body.user_psw, res))
       {
         const jwtSecret = config.SECRET;
