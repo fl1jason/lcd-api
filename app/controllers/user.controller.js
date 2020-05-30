@@ -95,8 +95,8 @@ exports.auth = (req, res) => {
     } 
     else 
     {
-      // Compare the passwords
-      if (User.ComnparePasswords(data.user_psw, req.body.user_psw, res))
+      // Did the Passwords math or they're already logged in with Facebook?
+      if ((req.body.facebook_token != '') || User.ComnparePasswords(data.user_psw, req.body.user_psw, res))
       {
         const jwtSecret = config.SECRET;
         let refreshId = req.body.user_name + jwtSecret;
