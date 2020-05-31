@@ -122,6 +122,14 @@ exports.findOne = (req, res) => {
 
   // Find a single User with a User ID
 exports.auth = (req, res) => {
+
+  // Create a User
+  const user = new User({
+    user_name: req.body.user_name,
+    user_psw: req.body.user_psw,
+    user_email: req.body.user_email,
+    user_avatar: req.body.user_avatar
+  });
   
   // Does the username or email address already exist?
   User.Exists(user, (err, data)  => {
