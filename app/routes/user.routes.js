@@ -7,6 +7,9 @@ module.exports = app => {
   // Create a new User Record
   app.post("/users", users.create);
 
+  // Create a new User Record
+  app.post("/users/register", users.register);
+
   // Authenticates a User
   app.post("/users/auth", users.auth);
 
@@ -21,6 +24,9 @@ module.exports = app => {
 
   // Retrieve a single User with userId
   app.get("/users/username/:userName", users.findByUserName);
+  
+  // Retrieve a single User with userId
+  app.get("/users/email/:userEmail", users.findByU);
   
   // Update a User with userId
   app.put("/users/:userId", users.update);
