@@ -148,14 +148,14 @@ exports.auth = (req, res) => {
     if (bValidFBAuth || User.ComnparePasswords(data.user_psw, req.body.user_psw, res))
     {
       const jwtSecret = config.SECRET;
-      let refreshId = req.body.user_name + jwtSecret;
+      let refreshId = data.user_name + jwtSecret;
       let salt = crypto.randomBytes(16).toString('base64');
       let hash = crypto.createHmac('sha512', salt).update(refreshId).digest("base64");
       req.body.refreshKey = salt;
       let token = jwt.sign(req.body, jwtSecret);
       let b = new Buffer(hash);
       let refresh_token = b.toString('base64');
-      res.status(201).send({accessToken: token, refreshToken: refresh_token});
+      res.status(201).send({accessToken: token, refreshToken: refresh_token, id: data.id, userName: data.user_name, userAvatar: data.user_avatar});
 
       //res.status(201).send({accessToken: token, refreshToken: refresh_token});
     }
